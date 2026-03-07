@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # --- КОНФИГУРАЦИЯ ---
-ALIAS_NAME="gotelegram"
-BINARY_PATH="/usr/local/bin/gotelegram"
+ALIAS_NAME="mtproto_telegram"
+BINARY_PATH="/usr/local/bin/mtproto_telegram"
 # TIP_LINK="https://pay.cloudtips.ru/p/7410814f"
 # PROMO_LINK="https://vk.cc/ct29NQ"
 
