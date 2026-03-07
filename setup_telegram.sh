@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- КОНФИГУРАЦИЯ ---
-ALIAS_NAME="mtproto_telegram"
+ALIAS_NAME="mtproto_setup"
 BINARY_PATH="/usr/local/bin/mtproto_telegram"
 # TIP_LINK="https://pay.cloudtips.ru/p/7410814f"
 # PROMO_LINK="https://vk.cc/ct29NQ"
