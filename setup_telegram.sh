@@ -1,12 +1,8 @@
 #!/bin/bash
 
-# --- КОНФИГУРАЦИЯ ---
 ALIAS_NAME="mtproto_setup"
 BINARY_PATH="/usr/local/bin/mtproto_telegram"
-# TIP_LINK="https://pay.cloudtips.ru/p/7410814f"
-# PROMO_LINK="https://vk.cc/ct29NQ"
 
-# --- ЦВЕТА ---
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
@@ -16,7 +12,6 @@ BLUE='\033[0;34m'
 WHITE='\033[1;37m'
 NC='\033[0m'
 
-# --- СИСТЕМНЫЕ ПРОВЕРКИ ---
 check_root() {
     if [ "$EUID" -ne 0 ]; then echo -e "${RED}Ошибка: запустите через sudo!${NC}"; exit 1; fi
 }
@@ -38,7 +33,6 @@ get_ip() {
     echo "$ip" | grep -E -o '([0-9]{1,3}\.){3}[0-9]{1,3}' | head -n 1
 }
 
-# --- ПАНЕЛЬ ДАННЫХ ---
 show_config() {
     if ! docker ps | grep -q "mtproto-proxy"; then echo -e "${RED}Прокси не найден!${NC}"; return; fi
     SECRET=$(docker inspect mtproto-proxy --format='{{range .Config.Cmd}}{{.}} {{end}}' | awk '{print $NF}')
@@ -54,7 +48,6 @@ show_config() {
     qrencode -t ANSIUTF8 "$LINK"
 }
 
-# --- УСТАНОВКА ---
 menu_install() {
     clear
     echo -e "${CYAN}--- Выберите домен для маскировки (Fake TLS) ---${NC}"
@@ -98,28 +91,22 @@ menu_install() {
     read -p "Установка завершена. Нажмите Enter..."
 }
 
-# --- ВЫХОД ---
 show_exit() {
     clear
     show_config
-    # echo -e "\n${MAGENTA}💰 ПОДДЕРЖКА АВТОРА (CloudTips)${NC}"
     # qrencode -t ANSIUTF8 "$TIP_LINK"
-    # echo -e "Донат: $TIP_LINK"
-    # echo -e "YouTube: https://www.youtube.com/@antenkaru"
     exit 0
 }
 
-# --- СТАРТ СКРИПТА ---
 check_root
 install_deps
-# show_promo # Промо теперь только один раз при старте
 
 while true; do
-    echo -e "\n${MAGENTA}=== Telegram Manager  ===${NC}"
+    echo -e "\n${MAGENTA}=== MTProto Manager  ===${NC}"
     echo -e "1) ${GREEN}Установить / Обновить прокси${NC}"
     echo -e "2) Показать данные подключения${NC}"
     # echo -e "3) ${YELLOW}Показать PROMO снова${NC}"
-    echo -e "4) ${RED}Удалить прокси${NC}"
+    echo -e "3) ${RED}Удалить прокси${NC}"
     echo -e "0) Выход${NC}"
     read -p "Пункт: " m_idx
     case $m_idx in
