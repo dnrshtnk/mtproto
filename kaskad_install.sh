@@ -304,8 +304,7 @@ show_menu() {
         echo -e "5) Посмотреть активные правила"
         echo -e "6) ${RED}Удалить одно правило${NC}"
         echo -e "7) ${RED}Сбросить ВСЕ настройки${NC}"
-        echo -e "8) ${YELLOW}Показать PROMO${NC}"
-        echo -e "9) ${MAGENTA}ИНСТРУКЦИЯ (Как настроить)${NC}" 
+        echo -e "8) ${MAGENTA}ИНСТРУКЦИЯ (Как настроить)${NC}" 
         echo -e "0) Выход"
         echo -e "------------------------------------------------------"
         read -p "Ваш выбор: " choice
@@ -318,7 +317,6 @@ show_menu() {
             5) list_active_rules ;;
             6) delete_single_rule ;;
             7) flush_rules ;;
-            # 8) show_promo ;;
             8) show_instructions ;;
             0) exit 0 ;;
             *) ;;
@@ -326,8 +324,6 @@ show_menu() {
     done
 }
 
-# --- ЗАПУСК ---
 check_root
 prepare_system
-# show_promo
 show_menu
