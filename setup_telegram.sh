@@ -94,7 +94,6 @@ menu_install() {
 show_exit() {
     clear
     show_config
-    # qrencode -t ANSIUTF8 "$TIP_LINK"
     exit 0
 }
 
@@ -105,15 +104,13 @@ while true; do
     echo -e "\n${MAGENTA}=== MTProto Manager  ===${NC}"
     echo -e "1) ${GREEN}Установить / Обновить прокси${NC}"
     echo -e "2) Показать данные подключения${NC}"
-    # echo -e "3) ${YELLOW}Показать PROMO снова${NC}"
     echo -e "3) ${RED}Удалить прокси${NC}"
     echo -e "0) Выход${NC}"
     read -p "Пункт: " m_idx
     case $m_idx in
         1) menu_install ;;
         2) clear; show_config; read -p "Нажмите Enter..." ;;
-        # 3) show_promo ;;
-        4) docker stop mtproto-proxy && docker rm mtproto-proxy && echo "Удалено" ;;
+        3) docker stop mtproto-proxy && docker rm mtproto-proxy && echo "Удалено" ;;
         0) show_exit ;;
         *) echo "Неверный ввод" ;;
     esac
