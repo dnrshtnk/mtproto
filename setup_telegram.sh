@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ALIAS_NAME="mtproto_setup"
-BINARY_PATH="/usr/local/bin/mtproto_telegram"
+ALIAS_NAME="mtg"
+BINARY_PATH="/usr/local/bin/mtg"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -25,6 +25,7 @@ install_deps() {
         apt-get update && apt-get install -y qrencode || yum install -y qrencode
     fi
     cp "$0" "$BINARY_PATH" && chmod +x "$BINARY_PATH"
+    echo -e "${GREEN}[OK] Скрипт доступен как команда: ${CYAN}mtg${NC}"
 }
 
 get_ip() {
@@ -53,8 +54,8 @@ menu_install() {
     echo -e "${CYAN}--- Выберите домен для маскировки (Fake TLS) ---${NC}"
     domains=(
         "google.com" "wikipedia.org" "habr.com" "github.com" 
-        "coursera.org" "udemy.com" "medium.com" "stackoverflow.com"
-        "bbc.com" "cnn.com" "reuters.com" "nytimes.com"
+        "ss.com" "autoauto.pl" "auto24.lv" "stackoverflow.com"
+        "bbc.com" "cnn.com" "reuters.com" "dw.com"
         "lenta.ru" "rbc.ru" "ria.ru" "kommersant.ru"
         "stepik.org" "duolingo.com" "khanacademy.org" "ted.com"
     )
@@ -91,6 +92,42 @@ menu_install() {
     read -p "Установка завершена. Нажмите Enter..."
 }
 
+update_image() {
+    echo -e "\n${YELLOW}[*] Обновление образа nineseconds/mtg:2...${NC}"
+
+    if docker ps | grep -q "mtproto-proxy"; then
+        # Сохраняем текущие настройки
+        SECRET=$(docker inspect mtproto-proxy --format='{{range .Config.Cmd}}{{.}} {{end}}' | awk '{print $NF}')
+        PORT=$(docker inspect mtproto-proxy --format='{{range $p, $conf := .HostConfig.PortBindings}}{{(index $conf 0).HostPort}}{{end}}' 2>/dev/null)
+        PORT=${PORT:-443}
+        
+        echo -e "${CYAN}Найдены активные настройки:${NC}"
+        echo -e "  Порт: $PORT"
+        echo -e "  Secret: $SECRET"
+        echo ""
+
+        echo -e "${YELLOW}[*] Остановка старого контейнера...${NC}"
+        docker stop mtproto-proxy &>/dev/null
+        docker rm mtproto-proxy &>/dev/null
+        
+        echo -e "${YELLOW}[*] Загрузка нового образа...${NC}"
+        docker pull nineseconds/mtg:2
+
+        echo -e "${YELLOW}[*] Запуск контейнера с сохраненными настройками...${NC}"
+        docker run -d --name mtproto-proxy --restart always -p "$PORT":"$PORT" \
+            nineseconds/mtg:2 simple-run -n 1.1.1.1 -i prefer-ipv4 0.0.0.0:"$PORT" "$SECRET" > /dev/null
+        
+        echo -e "${GREEN}[OK] Обновление завершено!${NC}"
+    else
+        echo -e "${YELLOW}[*] Загрузка нового образа...${NC}"
+        docker pull nineseconds/mtg:2
+        echo -e "${GREEN}[OK] Образ обновлен!${NC}"
+        echo -e "${CYAN}Прокси не был запущен. Настройте его в пункте меню 1.${NC}"
+    fi
+    
+    read -p "Нажмите Enter..."
+}
+
 show_exit() {
     clear
     show_config
@@ -102,15 +139,17 @@ install_deps
 
 while true; do
     echo -e "\n${MAGENTA}=== MTProto Manager  ===${NC}"
-    echo -e "1) ${GREEN}Установить / Обновить прокси${NC}"
+    echo -e "1) ${GREEN}Установить прокси${NC}"
     echo -e "2) Показать данные подключения${NC}"
     echo -e "3) ${RED}Удалить прокси${NC}"
+    echo -e "4) ${CYAN}Обновить MTProto${NC}"
     echo -e "0) Выход${NC}"
     read -p "Пункт: " m_idx
     case $m_idx in
         1) menu_install ;;
         2) clear; show_config; read -p "Нажмите Enter..." ;;
         3) docker stop mtproto-proxy && docker rm mtproto-proxy && echo "Удалено" ;;
+        4) update_image ;;
         0) show_exit ;;
         *) echo "Неверный ввод" ;;
     esac
