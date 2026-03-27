@@ -139,10 +139,10 @@ install_deps
 
 while true; do
     echo -e "\n${MAGENTA}=== MTProto Manager  ===${NC}"
-    echo -e "1) ${GREEN}Установить прокси${NC}"
+    echo -e "1) ${GREEN}Установить прокси (9seconds/mtg Proxy)${NC}"
     echo -e "2) Показать данные подключения${NC}"
     echo -e "3) ${RED}Удалить прокси${NC}"
-    echo -e "4) ${CYAN}Обновить MTProto${NC}"
+    echo -e "4) ${CYAN}Обновить (9seconds/mtg Proxy)${NC}"
     echo -e "0) Выход${NC}"
     read -p "Пункт: " m_idx
     case $m_idx in
