@@ -139,12 +139,23 @@ show_exit() {
 check_root
 install_deps
 
+# Получить версию mtg
+get_mtg_version() {
+    local version
+    version=$(docker run --rm nineseconds/mtg:2 -v 2>/dev/null | head -n 1)
+    if [[ -n "$version" ]]; then
+        echo "$version"
+    else
+        echo "N/A"
+    fi
+}
+
 while true; do
     echo -e "\n${MAGENTA}=== MTProto Manager  ===${NC}"
     echo -e "1) ${GREEN}Установить прокси (9seconds/mtg Proxy)${NC}"
     echo -e "2) Показать данные подключения${NC}"
     echo -e "3) ${RED}Удалить прокси${NC}"
-    echo -e "4) ${CYAN}Обновить (9seconds/mtg Proxy)${NC}"
+    echo -e "4) ${CYAN}Обновить (9seconds/mtg Proxy)${NC} ${YELLOW}$(get_mtg_version)${NC}"
     echo -e "0) Выход${NC}"
     read -p "Пункт: " m_idx
     case $m_idx in
