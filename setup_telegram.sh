@@ -24,8 +24,10 @@ install_deps() {
     if ! command -v qrencode &> /dev/null; then
         apt-get update && apt-get install -y qrencode || yum install -y qrencode
     fi
-    cp "$0" "$BINARY_PATH" && chmod +x "$BINARY_PATH"
-    echo -e "${GREEN}[OK] Скрипт доступен как команда: ${CYAN}mtg${NC}"
+    if [ "$(realpath "$0")" != "$(realpath "$BINARY_PATH")" ]; then
+        cp "$0" "$BINARY_PATH" && chmod +x "$BINARY_PATH"
+        echo -e "${GREEN}[OK] Скрипт доступен как команда: ${CYAN}mtg${NC}"
+    fi
 }
 
 get_ip() {
