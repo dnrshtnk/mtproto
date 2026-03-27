@@ -1,7 +1,7 @@
 #!/bin/bash
 
-ALIAS_NAME="mtg"
-BINARY_PATH="/usr/local/bin/mtg"
+ALIAS_NAME="mtgsetup"
+BINARY_PATH="/usr/local/bin/mtgsetup"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -26,7 +26,7 @@ install_deps() {
     fi
     if [ "$(realpath "$0")" != "$(realpath "$BINARY_PATH")" ]; then
         cp "$0" "$BINARY_PATH" && chmod +x "$BINARY_PATH"
-        echo -e "${GREEN}[OK] Скрипт доступен как команда: ${CYAN}mtg${NC}"
+        echo -e "${GREEN}[OK] Скрипт доступен как команда: ${CYAN}mtgsetup${NC}"
     fi
 }
 
