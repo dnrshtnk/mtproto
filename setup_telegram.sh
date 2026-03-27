@@ -80,11 +80,11 @@ menu_install() {
     esac
 
     echo -e "${YELLOW}[*] Настройка прокси...${NC}"
-    SECRET=$(docker run --rm nineseconds/mtg:master generate-secret --hex "$DOMAIN")
+    SECRET=$(docker run --rm nineseconds/mtg:2 generate-secret --hex "$DOMAIN")
     docker stop mtproto-proxy &>/dev/null && docker rm mtproto-proxy &>/dev/null
     
     docker run -d --name mtproto-proxy --restart always -p "$PORT":"$PORT" \
-        nineseconds/mtg:master simple-run -n 1.1.1.1 -i prefer-ipv4 0.0.0.0:"$PORT" "$SECRET" > /dev/null
+        nineseconds/mtg:2 simple-run -n 1.1.1.1 -i prefer-ipv4 0.0.0.0:"$PORT" "$SECRET" > /dev/null
     
     clear
     show_config
